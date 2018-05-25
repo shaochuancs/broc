@@ -5,8 +5,5 @@
 'use strict';
 
 module.exports = {
-  app_path: 'web/components/app',
-  config_path: 'config',
-  middleware_path: 'middleware',
-  utils_path: 'utils'
+  app_path: 'web/components/app'
 };

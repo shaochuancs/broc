@@ -1,20 +1,16 @@
-@import "constants";
-
 html {
   position: relative;
   height: 100%;
 }
-
-html,body {
+html,
+body {
   margin: 0;
 }
-
 body {
   font-family: "Helvetic Neue", "Hiragino Sans GB", "microsoft yahei", arial, sans-serif;
   background-color: #f2f2f2;
   height: 100%;
 }
-
 .inline-block {
   display: inline-block;
 }
@@ -24,70 +20,55 @@ body {
 .no-padding {
   padding: 0;
 }
-
 .color-required {
-  color: @error-text;
+  color: #c9510c;
 }
-
-a:hover, a:active, a:focus {
+a:hover,
+a:active,
+a:focus {
   text-decoration: none;
 }
 a.color-inherit {
   color: inherit;
 }
-
 .center-form-wrapper {
   padding-top: 80px;
 }
-
 .full-width-container {
   padding-left: 40px;
   padding-right: 40px;
 }
-
 .margin-top-normal {
   margin-top: 20px;
 }
-
 .err-msg {
-  color: @brand-danger;
+  color: #e74c3c;
   font-size: 14px;
-
-  .glyphicon {
-    top: 2px;
-  }
 }
-
-.modal {
-  .modal-body {
-    .modal-description {
-      margin-bottom: 20px;
-    }
-  }
+.err-msg .glyphicon {
+  top: 2px;
 }
-
+.modal .modal-body .modal-description {
+  margin-bottom: 20px;
+}
 .input-field {
   margin-bottom: 14px;
-
-  .input-title {
-    padding-left: 0;
-
-    &.aligned-title {
-      padding-top: 6px;
-    }
-
-    .icon {
-      position: absolute;
-      top: 10px;
-      right: -2px;
-      color: @gray;
-      cursor: help;
-      font-size: 14px;
-
-      .tooltip-inner {
-        width: 160px;
-        font-size: 12px;
-      }
-    }
-  }
+}
+.input-field .input-title {
+  padding-left: 0;
+}
+.input-field .input-title.aligned-title {
+  padding-top: 6px;
+}
+.input-field .input-title .icon {
+  position: absolute;
+  top: 10px;
+  right: -2px;
+  color: #95a5a6;
+  cursor: help;
+  font-size: 14px;
+}
+.input-field .input-title .icon .tooltip-inner {
+  width: 160px;
+  font-size: 12px;
 }
