@@ -1,0 +1,11 @@
+{
+  "name": "uniboard",
+  "description": "IoT management system",
+  "version": "0.1",
+  "homepage": "https://github.com/shaochuancs/uniboard.git",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "js-cookie": "^2.1.2"
+  }
+}
