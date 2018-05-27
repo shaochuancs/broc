@@ -72,3 +72,16 @@ a.color-inherit {
   width: 160px;
   font-size: 12px;
 }
+.btn.btn-clear {
+  box-sizing: border-box;
+  background: none;
+  border: 2px solid #1abc9c;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 12px 28px 12px;
+  color: #1abc9c;
+}
+.btn.btn-clear:hover {
+  background: #1abc9c;
+  color: white;
+}
