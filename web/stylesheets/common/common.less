@@ -1,0 +1,108 @@
+@import "constants";
+
+html {
+  position: relative;
+  height: 100%;
+}
+
+html,body {
+  margin: 0;
+}
+
+body {
+  font-family: "Helvetic Neue", "Hiragino Sans GB", "microsoft yahei", arial, sans-serif;
+  background-color: #f2f2f2;
+  height: 100%;
+}
+
+.inline-block {
+  display: inline-block;
+}
+.full-width {
+  width: 100%;
+}
+.no-padding {
+  padding: 0;
+}
+
+.color-required {
+  color: @error-text;
+}
+
+a:hover, a:active, a:focus {
+  text-decoration: none;
+}
+a.color-inherit {
+  color: inherit;
+}
+
+.center-form-wrapper {
+  padding-top: 80px;
+}
+
+.full-width-container {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.margin-top-normal {
+  margin-top: 20px;
+}
+
+.err-msg {
+  color: @brand-danger;
+  font-size: 14px;
+
+  .glyphicon {
+    top: 2px;
+  }
+}
+
+.modal {
+  .modal-body {
+    .modal-description {
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.input-field {
+  margin-bottom: 14px;
+
+  .input-title {
+    padding-left: 0;
+
+    &.aligned-title {
+      padding-top: 6px;
+    }
+
+    .icon {
+      position: absolute;
+      top: 10px;
+      right: -2px;
+      color: @gray;
+      cursor: help;
+      font-size: 14px;
+
+      .tooltip-inner {
+        width: 160px;
+        font-size: 12px;
+      }
+    }
+  }
+}
+
+.btn.btn-clear {
+  box-sizing: border-box;
+  background: none;
+  border: 2px solid @turquoise;
+  font-size: 14px;
+  font-weight: normal;
+  padding: 12px 28px 12px;
+  color: @turquoise;
+
+  &:hover {
+    background: @turquoise;
+    color: white;
+  }
+}
