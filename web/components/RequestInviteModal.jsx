@@ -8,6 +8,7 @@ import React from 'react';
 
 import ReactModalDecorator from './utils/ReactModalDecorator';
 import utils from './utils/utils';
+import {requestInvite} from './utils/WebAPIUtils';
 
 class RequestInviteModal extends React.Component {
   constructor(props) {
@@ -19,7 +20,9 @@ class RequestInviteModal extends React.Component {
       requestInviteError: '',
       fullNameError: '',
       emailError: '',
-      reEmailerror: ''
+      reEmailerror: '',
+      isSubmitting: false,
+      isSubmitSuccess: false
     };
     this.xhrs = [];
   }
@@ -39,10 +42,19 @@ class RequestInviteModal extends React.Component {
   sendRequest(e) {
     e.preventDefault();
 
+    this.setState({
+      requestInviteError: ''
+    });
+
     let name = this.state.fullName.trim();
     if (!name) {
       this.setState({
         fullNameError: 'Please input full name'
+      });
+      return;
+    } else if (name.length < 3) {
+      this.setState({
+        fullNameError: 'Full name must have at least 3 characters'
       });
       return;
     }
@@ -78,7 +90,26 @@ class RequestInviteModal extends React.Component {
       return;
     }
 
-    alert('OK!');
+    this.setState({
+      isSubmitting: true
+    });
+
+    let xhr = requestInvite(this.state.fullName, this.state.email, function() {
+      this.setState({
+        isSubmitting: false,
+        isSubmitSuccess: true
+      });
+    }.bind(this), function(err, textStatus) {
+      if (textStatus === 'abort') {
+        return;
+      }
+
+      this.setState({
+        isSubmitting: false,
+        requestInviteError: utils.getErrorMessage(err, 'Failed to request invite')
+      });
+    }.bind(this));
+    this.xhrs.push(xhr);
   }
 
   render() {
@@ -92,20 +123,39 @@ class RequestInviteModal extends React.Component {
               <h4 className="modal-title">Request an invite</h4>
             </div>
             <div className="modal-body">
-              <div>
-                <form onSubmit={(e) => this.sendRequest(e)}>
-                  <input type="text" placeholder="Full name" className="form-control" value={this.state.fullName} onChange={(e) => this.handleChange(e, 'fullName')}></input>
-                  <input type="text" placeholder="Email" className="form-control" value={this.state.email} onChange={(e) => this.handleChange(e, 'email')}></input>
-                  <input type="text" placeholder="Confirm email" className="form-control" value={this.state.reEmail} onChange={(e) => this.handleChange(e, 'reEmail')}></input>
-                  <button type="submit" className="btn btn-primary full-width btn-submit">Send</button>
-                </form>
-              </div>
               {
-                error
+                this.state.isSubmitSuccess
                   ?
-                  <div className="err-msg text-center margin-top-normal"><span className="glyphicon glyphicon-remove"></span> {error}</div>
+                  <div className="text-center success-message">
+                    <h4>All done!</h4>
+                    <p>
+                      <span>You will be one of the first to experience</span><br/>
+                      <span>Broccoli & Co. when we launch.</span>
+                    </p>
+                    <button data-dismiss="modal" className="btn btn-primary full-width">OK</button>
+                  </div>
                   :
-                  null
+                  <div className="request-form-wrapper">
+                    <form onSubmit={(e) => this.sendRequest(e)}>
+                      <input type="text" placeholder="Full name" className="form-control" value={this.state.fullName} onChange={(e) => this.handleChange(e, 'fullName')}></input>
+                      <input type="text" placeholder="Email" className="form-control" value={this.state.email} onChange={(e) => this.handleChange(e, 'email')}></input>
+                      <input type="text" placeholder="Confirm email" className="form-control" value={this.state.reEmail} onChange={(e) => this.handleChange(e, 'reEmail')}></input>
+                      {
+                        this.state.isSubmitting
+                          ?
+                          <button type="submit" className="btn btn-primary full-width btn-submit disabled">Sending, please wait...</button>
+                          :
+                          <button type="submit" className="btn btn-primary full-width btn-submit">Send</button>
+                      }
+                    </form>
+                    {
+                      error
+                        ?
+                        <div className="err-msg text-center margin-top-normal"><span className="glyphicon glyphicon-remove"></span> {error}</div>
+                        :
+                        null
+                    }
+                  </div>
               }
             </div>
           </div>

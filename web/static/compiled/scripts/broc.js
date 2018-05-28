@@ -45572,6 +45572,8 @@ var _utils = require('./utils/utils');
 
 var _utils2 = _interopRequireDefault(_utils);
 
+var _WebAPIUtils = require('./utils/WebAPIUtils');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -45597,7 +45599,9 @@ var RequestInviteModal = function (_React$Component) {
       requestInviteError: '',
       fullNameError: '',
       emailError: '',
-      reEmailerror: ''
+      reEmailerror: '',
+      isSubmitting: false,
+      isSubmitSuccess: false
     };
     _this.xhrs = [];
     return _this;
@@ -45620,6 +45624,10 @@ var RequestInviteModal = function (_React$Component) {
     key: 'sendRequest',
     value: function sendRequest(e) {
       e.preventDefault();
+
+      this.setState({
+        requestInviteError: ''
+      });
 
       var name = this.state.fullName.trim();
       if (!name) {
@@ -45660,7 +45668,26 @@ var RequestInviteModal = function (_React$Component) {
         return;
       }
 
-      alert('OK!');
+      this.setState({
+        isSubmitting: true
+      });
+
+      var xhr = (0, _WebAPIUtils.requestInvite)(this.state.fullName, this.state.email, function () {
+        this.setState({
+          isSubmitting: false,
+          isSubmitSuccess: true
+        });
+      }.bind(this), function (err, textStatus) {
+        if (textStatus === 'abort') {
+          return;
+        }
+
+        this.setState({
+          isSubmitting: false,
+          requestInviteError: _utils2.default.getErrorMessage(err, 'Failed to request invite')
+        });
+      }.bind(this));
+      this.xhrs.push(xhr);
     }
   }, {
     key: 'render',
@@ -45698,9 +45725,37 @@ var RequestInviteModal = function (_React$Component) {
             _react2.default.createElement(
               'div',
               { className: 'modal-body' },
-              _react2.default.createElement(
+              this.state.isSubmitSuccess ? _react2.default.createElement(
                 'div',
-                null,
+                { className: 'text-center success-message' },
+                _react2.default.createElement(
+                  'h4',
+                  null,
+                  'All done!'
+                ),
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  _react2.default.createElement(
+                    'span',
+                    null,
+                    'You will be one of the first to experience'
+                  ),
+                  _react2.default.createElement('br', null),
+                  _react2.default.createElement(
+                    'span',
+                    null,
+                    'Broccoli & Co. when we launch.'
+                  )
+                ),
+                _react2.default.createElement(
+                  'button',
+                  { 'data-dismiss': 'modal', className: 'btn btn-primary full-width' },
+                  'OK'
+                )
+              ) : _react2.default.createElement(
+                'div',
+                { className: 'request-form-wrapper' },
                 _react2.default.createElement(
                   'form',
                   { onSubmit: function onSubmit(e) {
@@ -45715,20 +45770,24 @@ var RequestInviteModal = function (_React$Component) {
                   _react2.default.createElement('input', { type: 'text', placeholder: 'Confirm email', className: 'form-control', value: this.state.reEmail, onChange: function onChange(e) {
                       return _this2.handleChange(e, 'reEmail');
                     } }),
-                  _react2.default.createElement(
+                  this.state.isSubmitting ? _react2.default.createElement(
+                    'button',
+                    { type: 'submit', className: 'btn btn-primary full-width btn-submit disabled' },
+                    'Sending, please wait...'
+                  ) : _react2.default.createElement(
                     'button',
                     { type: 'submit', className: 'btn btn-primary full-width btn-submit' },
                     'Send'
                   )
-                )
-              ),
-              error ? _react2.default.createElement(
-                'div',
-                { className: 'err-msg text-center margin-top-normal' },
-                _react2.default.createElement('span', { className: 'glyphicon glyphicon-remove' }),
-                ' ',
-                error
-              ) : null
+                ),
+                error ? _react2.default.createElement(
+                  'div',
+                  { className: 'err-msg text-center margin-top-normal' },
+                  _react2.default.createElement('span', { className: 'glyphicon glyphicon-remove' }),
+                  ' ',
+                  error
+                ) : null
+              )
             )
           )
         )
@@ -45743,7 +45802,7 @@ _ReactModalDecorator2.default.decorateModal(RequestInviteModal, 'request-invite-
 
 exports.default = RequestInviteModal;
 
-},{"./utils/ReactModalDecorator":514,"./utils/utils":515,"react":510}],513:[function(require,module,exports){
+},{"./utils/ReactModalDecorator":514,"./utils/WebAPIUtils":515,"./utils/utils":516,"react":510}],513:[function(require,module,exports){
 'use strict';
 
 var _Home = require('./Home');
@@ -45816,6 +45875,32 @@ exports.default = {
 };
 
 },{"react":510,"react-dom":358}],515:[function(require,module,exports){
+/**
+ * Created by cshao on 8/9/16.
+ */
+
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var API_FAKE_AUTH = 'https://l94wc2001h.execute-api.ap-southeast-2.amazonaws.com/prod/fake-auth';
+
+function requestInvite(name, email, successCB, failCB) {
+  return $.ajax(API_FAKE_AUTH, {
+    method: 'POST',
+    contentType: 'application/json',
+    dataType: 'json',
+    data: JSON.stringify({
+      name: name,
+      email: email
+    })
+  }).done(successCB).fail(failCB);
+}
+
+exports.requestInvite = requestInvite;
+
+},{}],516:[function(require,module,exports){
 /**
  * Created by cshao on 11/5/16.
  */
@@ -45952,13 +46037,13 @@ exports.getErrorMessage = function (errorObj, defaultMessage) {
     throw new TypeError('required argument errorObj is missing');
   }
 
-  if (errorObj.responseJSON && errorObj.responseJSON.message) {
-    return errorObj.responseJSON.message;
+  if (errorObj.responseJSON && errorObj.responseJSON.errorMessage) {
+    return errorObj.responseJSON.errorMessage;
   }
 
   var message = void 0;
   try {
-    message = JSON.parse(errorObj.responseText).message;
+    message = JSON.parse(errorObj.responseText).errorMessage;
   } catch (e) {
     message = defaultMessage;
   }

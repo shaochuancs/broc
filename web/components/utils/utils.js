@@ -112,13 +112,13 @@ exports.getErrorMessage = function(errorObj, defaultMessage) {
     throw new TypeError('required argument errorObj is missing');
   }
 
-  if (errorObj.responseJSON && errorObj.responseJSON.message) {
-    return errorObj.responseJSON.message;
+  if (errorObj.responseJSON && errorObj.responseJSON.errorMessage) {
+    return errorObj.responseJSON.errorMessage;
   }
 
   let message;
   try {
-    message = JSON.parse(errorObj.responseText).message;
+    message = JSON.parse(errorObj.responseText).errorMessage;
   } catch(e) {
     message = defaultMessage;
   }

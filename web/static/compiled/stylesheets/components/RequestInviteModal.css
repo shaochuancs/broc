@@ -88,9 +88,20 @@ a.color-inherit {
 .request-invite-modal-container .modal-body {
   padding: 40px 24px 55px;
 }
-.request-invite-modal-container .modal-body form .form-control {
-  margin-bottom: 15px;
+.request-invite-modal-container .modal-body .request-form-wrapper {
+  width: 80%;
+  margin: 0 auto;
 }
-.request-invite-modal-container .modal-body form .btn-submit {
+.request-invite-modal-container .modal-body .request-form-wrapper form .form-control {
+  margin-bottom: 20px;
+}
+.request-invite-modal-container .modal-body .request-form-wrapper form .btn-submit {
   margin-top: 30px;
+}
+.request-invite-modal-container .modal-body .success-message p {
+  font-size: 14px;
+}
+.request-invite-modal-container .modal-body .success-message button {
+  width: 80%;
+  margin-top: 3rem;
 }
