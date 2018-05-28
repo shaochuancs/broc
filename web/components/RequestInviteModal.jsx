@@ -20,7 +20,7 @@ class RequestInviteModal extends React.Component {
       requestInviteError: '',
       fullNameError: '',
       emailError: '',
-      reEmailerror: '',
+      reEmailError: '',
       isSubmitting: false,
       isSubmitSuccess: false
     };
@@ -33,64 +33,92 @@ class RequestInviteModal extends React.Component {
 
   handleChange(e, key) {
     let errorKey = key+'Error';
-    this.setState({
+    let newState = {
       [key]: e.target.value,
-      [errorKey]: ''
-    });
+      [errorKey]: '',
+      requestInviteError: ''
+    };
+    if (key === 'email') {
+      newState.reEmailError = '';
+    }
+    this.setState(newState);
   }
 
-  sendRequest(e) {
-    e.preventDefault();
-
-    this.setState({
-      requestInviteError: ''
-    });
-
+  validateFullName() {
     let name = this.state.fullName.trim();
     if (!name) {
       this.setState({
         fullNameError: 'Please input full name'
       });
-      return;
+      return false;
     } else if (name.length < 3) {
       this.setState({
         fullNameError: 'Full name must have at least 3 characters'
       });
-      return;
+      return false;
     }
     let validateNameReport = utils.validateInput(name, utils.VALIDATE_TYPE.NAME, 'full name');
     if (!validateNameReport.result) {
       this.setState({fullNameError: validateNameReport.message});
-      return;
+      return false;
     }
 
+    return true;
+  }
+
+  validateEmail() {
     let email = this.state.email.trim();
     if (!email) {
       this.setState({
         emailError: 'Please input email'
       });
-      return;
+      return false;
     }
     let validateEmailReport = utils.validateInput(email, utils.VALIDATE_TYPE.EMAIL, 'email');
     if (!validateEmailReport.result) {
       this.setState({emailError: validateEmailReport.message});
-      return;
+      return false;
     }
 
+    return true;
+  }
+
+  validateReEmail() {
+    let email = this.state.email.trim();
     let reEmail = this.state.reEmail.trim();
     if (!reEmail) {
       this.setState({
         reEmailError: 'Please confirm email'
       });
-      return;
+      return false;
     } else if (reEmail !== email) {
       this.setState({
         reEmailError: 'Please confirm with identical email'
       });
+      return false;
+    }
+
+    return true;
+  }
+
+  sendRequest(e) {
+    e.preventDefault();
+
+    if (!this.validateFullName()) {
+      return;
+    }
+    if (!this.validateEmail()) {
+      return;
+    }
+    if (!this.validateReEmail()) {
       return;
     }
 
     this.setState({
+      fullNameError: '',
+      emailError: '',
+      reEmailError: '',
+      requestInviteError: '',
       isSubmitting: true
     });
 
@@ -137,9 +165,21 @@ class RequestInviteModal extends React.Component {
                   :
                   <div className="request-form-wrapper">
                     <form onSubmit={(e) => this.sendRequest(e)}>
-                      <input type="text" placeholder="Full name" className="form-control input-name" value={this.state.fullName} onChange={(e) => this.handleChange(e, 'fullName')}></input>
-                      <input type="text" placeholder="Email" className="form-control input-email" value={this.state.email} onChange={(e) => this.handleChange(e, 'email')}></input>
-                      <input type="text" placeholder="Confirm email" className="form-control input-reEmail" value={this.state.reEmail} onChange={(e) => this.handleChange(e, 'reEmail')}></input>
+                      <input type="text" placeholder="Full name" className="form-control input-name"
+                             value={this.state.fullName}
+                             onChange={(e) => this.handleChange(e, 'fullName')}
+                             onBlur={() => this.validateFullName()}>
+                      </input>
+                      <input type="text" placeholder="Email" className="form-control input-email"
+                             value={this.state.email}
+                             onChange={(e) => this.handleChange(e, 'email')}
+                             onBlur={() => this.validateEmail()}>
+                      </input>
+                      <input type="text" placeholder="Confirm email" className="form-control input-reEmail"
+                             value={this.state.reEmail}
+                             onChange={(e) => this.handleChange(e, 'reEmail')}
+                             onBlur={() => this.validateReEmail()}>
+                      </input>
                       {
                         this.state.isSubmitting
                           ?
