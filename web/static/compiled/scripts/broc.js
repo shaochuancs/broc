@@ -45766,13 +45766,13 @@ var RequestInviteModal = function (_React$Component) {
                   { onSubmit: function onSubmit(e) {
                       return _this2.sendRequest(e);
                     } },
-                  _react2.default.createElement('input', { type: 'text', placeholder: 'Full name', className: 'form-control', value: this.state.fullName, onChange: function onChange(e) {
+                  _react2.default.createElement('input', { type: 'text', placeholder: 'Full name', className: 'form-control input-name', value: this.state.fullName, onChange: function onChange(e) {
                       return _this2.handleChange(e, 'fullName');
                     } }),
-                  _react2.default.createElement('input', { type: 'text', placeholder: 'Email', className: 'form-control', value: this.state.email, onChange: function onChange(e) {
+                  _react2.default.createElement('input', { type: 'text', placeholder: 'Email', className: 'form-control input-email', value: this.state.email, onChange: function onChange(e) {
                       return _this2.handleChange(e, 'email');
                     } }),
-                  _react2.default.createElement('input', { type: 'text', placeholder: 'Confirm email', className: 'form-control', value: this.state.reEmail, onChange: function onChange(e) {
+                  _react2.default.createElement('input', { type: 'text', placeholder: 'Confirm email', className: 'form-control input-reEmail', value: this.state.reEmail, onChange: function onChange(e) {
                       return _this2.handleChange(e, 'reEmail');
                     } }),
                   this.state.isSubmitting ? _react2.default.createElement(
