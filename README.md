@@ -9,14 +9,14 @@ npm install -g bower
 npm install -g gulp
 ```
 
-Secondly, install all NodeJS dependencies and Bower dependencies:
+Secondly, install all NodeJS dependencies and Bower dependencies under non-prod Node.js environment:
 
 ```
 npm install
 bower install
 ```
 
-Then, build the project:
+Then, build the project under Node.js production environment (`NODE_ENV` is `production`):
 
 ```
 gulp

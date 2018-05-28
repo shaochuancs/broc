@@ -61,7 +61,8 @@ gulp.task('broc_scripts', function() {
     .pipe(source('broc.js'))
     .pipe(buffer())
     .pipe(gulpif(isProdMode, uglify({
-      mangle: false
+      mangle: false,
+      compress: true
     })))
     .pipe(gulp.dest('./web/static/compiled/scripts'));
 });
