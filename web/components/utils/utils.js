@@ -4,8 +4,6 @@
 
 'use strict';
 
-const _ = require('lodash');
-
 const REG_EXP_EMAIL = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const REG_EXP_PASSWORD = /^[a-zA-Z0-9./<>?;:"'`!@#$%^&*()\[\]{}_+=|\\-]*$/;
 const REG_EXP_NAME = /^[a-zA-Z0-9 ._#@()\u4e00-\u9eff-]*$/;
@@ -130,7 +128,7 @@ exports.getErrorMessage = function(errorObj, defaultMessage) {
 
 exports.abortAllXHRs = function(xhrs) {
   for (let i in xhrs) {
-    if (_.isFunction(xhrs[i].abort)) {
+    if (typeof xhrs[i].abort === 'function') {
       xhrs[i].abort();
     }
   }
