@@ -45599,7 +45599,7 @@ var RequestInviteModal = function (_React$Component) {
       requestInviteError: '',
       fullNameError: '',
       emailError: '',
-      reEmailerror: '',
+      reEmailError: '',
       isSubmitting: false,
       isSubmitSuccess: false
     };
@@ -45615,65 +45615,95 @@ var RequestInviteModal = function (_React$Component) {
   }, {
     key: 'handleChange',
     value: function handleChange(e, key) {
-      var _setState;
+      var _newState;
 
       var errorKey = key + 'Error';
-      this.setState((_setState = {}, _defineProperty(_setState, key, e.target.value), _defineProperty(_setState, errorKey, ''), _setState));
+      var newState = (_newState = {}, _defineProperty(_newState, key, e.target.value), _defineProperty(_newState, errorKey, ''), _defineProperty(_newState, 'requestInviteError', ''), _newState);
+      if (key === 'email') {
+        newState.reEmailError = '';
+      }
+      this.setState(newState);
+    }
+  }, {
+    key: 'validateFullName',
+    value: function validateFullName() {
+      var name = this.state.fullName.trim();
+      if (!name) {
+        this.setState({
+          fullNameError: 'Please input full name'
+        });
+        return false;
+      } else if (name.length < 3) {
+        this.setState({
+          fullNameError: 'Full name must have at least 3 characters'
+        });
+        return false;
+      }
+      var validateNameReport = _utils2.default.validateInput(name, _utils2.default.VALIDATE_TYPE.NAME, 'full name');
+      if (!validateNameReport.result) {
+        this.setState({ fullNameError: validateNameReport.message });
+        return false;
+      }
+
+      return true;
+    }
+  }, {
+    key: 'validateEmail',
+    value: function validateEmail() {
+      var email = this.state.email.trim();
+      if (!email) {
+        this.setState({
+          emailError: 'Please input email'
+        });
+        return false;
+      }
+      var validateEmailReport = _utils2.default.validateInput(email, _utils2.default.VALIDATE_TYPE.EMAIL, 'email');
+      if (!validateEmailReport.result) {
+        this.setState({ emailError: validateEmailReport.message });
+        return false;
+      }
+
+      return true;
+    }
+  }, {
+    key: 'validateReEmail',
+    value: function validateReEmail() {
+      var email = this.state.email.trim();
+      var reEmail = this.state.reEmail.trim();
+      if (!reEmail) {
+        this.setState({
+          reEmailError: 'Please confirm email'
+        });
+        return false;
+      } else if (reEmail !== email) {
+        this.setState({
+          reEmailError: 'Please confirm with identical email'
+        });
+        return false;
+      }
+
+      return true;
     }
   }, {
     key: 'sendRequest',
     value: function sendRequest(e) {
       e.preventDefault();
 
-      this.setState({
-        requestInviteError: ''
-      });
-
-      var name = this.state.fullName.trim();
-      if (!name) {
-        this.setState({
-          fullNameError: 'Please input full name'
-        });
-        return;
-      } else if (name.length < 3) {
-        this.setState({
-          fullNameError: 'Full name must have at least 3 characters'
-        });
+      if (!this.validateFullName()) {
         return;
       }
-      var validateNameReport = _utils2.default.validateInput(name, _utils2.default.VALIDATE_TYPE.NAME, 'full name');
-      if (!validateNameReport.result) {
-        this.setState({ fullNameError: validateNameReport.message });
+      if (!this.validateEmail()) {
         return;
       }
-
-      var email = this.state.email.trim();
-      if (!email) {
-        this.setState({
-          emailError: 'Please input email'
-        });
-        return;
-      }
-      var validateEmailReport = _utils2.default.validateInput(email, _utils2.default.VALIDATE_TYPE.EMAIL, 'email');
-      if (!validateEmailReport.result) {
-        this.setState({ emailError: validateEmailReport.message });
-        return;
-      }
-
-      var reEmail = this.state.reEmail.trim();
-      if (!reEmail) {
-        this.setState({
-          reEmailError: 'Please confirm email'
-        });
-        return;
-      } else if (reEmail !== email) {
-        this.setState({
-          reEmailError: 'Please confirm with identical email'
-        });
+      if (!this.validateReEmail()) {
         return;
       }
 
       this.setState({
+        fullNameError: '',
+        emailError: '',
+        reEmailError: '',
+        requestInviteError: '',
         isSubmitting: true
       });
 
@@ -45766,14 +45796,29 @@ var RequestInviteModal = function (_React$Component) {
                   { onSubmit: function onSubmit(e) {
                       return _this2.sendRequest(e);
                     } },
-                  _react2.default.createElement('input', { type: 'text', placeholder: 'Full name', className: 'form-control input-name', value: this.state.fullName, onChange: function onChange(e) {
+                  _react2.default.createElement('input', { type: 'text', placeholder: 'Full name', className: 'form-control input-name',
+                    value: this.state.fullName,
+                    onChange: function onChange(e) {
                       return _this2.handleChange(e, 'fullName');
+                    },
+                    onBlur: function onBlur() {
+                      return _this2.validateFullName();
                     } }),
-                  _react2.default.createElement('input', { type: 'text', placeholder: 'Email', className: 'form-control input-email', value: this.state.email, onChange: function onChange(e) {
+                  _react2.default.createElement('input', { type: 'text', placeholder: 'Email', className: 'form-control input-email',
+                    value: this.state.email,
+                    onChange: function onChange(e) {
                       return _this2.handleChange(e, 'email');
+                    },
+                    onBlur: function onBlur() {
+                      return _this2.validateEmail();
                     } }),
-                  _react2.default.createElement('input', { type: 'text', placeholder: 'Confirm email', className: 'form-control input-reEmail', value: this.state.reEmail, onChange: function onChange(e) {
+                  _react2.default.createElement('input', { type: 'text', placeholder: 'Confirm email', className: 'form-control input-reEmail',
+                    value: this.state.reEmail,
+                    onChange: function onChange(e) {
                       return _this2.handleChange(e, 'reEmail');
+                    },
+                    onBlur: function onBlur() {
+                      return _this2.validateReEmail();
                     } }),
                   this.state.isSubmitting ? _react2.default.createElement(
                     'button',
