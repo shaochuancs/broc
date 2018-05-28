@@ -24,7 +24,9 @@ coverage
 .grunt
 
 # Bower dependency directory (https://bower.io/)
-bower_components
+web/static/bower_components
+web/static/compiled
+web/static/broc.html
 
 # node-waf configuration
 .lock-wscript
