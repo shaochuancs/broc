@@ -45635,6 +45635,11 @@ var RequestInviteModal = function (_React$Component) {
           fullNameError: 'Please input full name'
         });
         return;
+      } else if (name.length < 3) {
+        this.setState({
+          fullNameError: 'Full name must have at least 3 characters'
+        });
+        return;
       }
       var validateNameReport = _utils2.default.validateInput(name, _utils2.default.VALIDATE_TYPE.NAME, 'full name');
       if (!validateNameReport.result) {

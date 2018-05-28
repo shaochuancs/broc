@@ -5,5 +5,5 @@
 'use strict';
 
 module.exports = {
-  app_path: 'web/components/app'
+  components_path: 'web/components'
 };

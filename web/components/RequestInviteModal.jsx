@@ -137,9 +137,9 @@ class RequestInviteModal extends React.Component {
                   :
                   <div className="request-form-wrapper">
                     <form onSubmit={(e) => this.sendRequest(e)}>
-                      <input type="text" placeholder="Full name" className="form-control" value={this.state.fullName} onChange={(e) => this.handleChange(e, 'fullName')}></input>
-                      <input type="text" placeholder="Email" className="form-control" value={this.state.email} onChange={(e) => this.handleChange(e, 'email')}></input>
-                      <input type="text" placeholder="Confirm email" className="form-control" value={this.state.reEmail} onChange={(e) => this.handleChange(e, 'reEmail')}></input>
+                      <input type="text" placeholder="Full name" className="form-control input-name" value={this.state.fullName} onChange={(e) => this.handleChange(e, 'fullName')}></input>
+                      <input type="text" placeholder="Email" className="form-control input-email" value={this.state.email} onChange={(e) => this.handleChange(e, 'email')}></input>
+                      <input type="text" placeholder="Confirm email" className="form-control input-reEmail" value={this.state.reEmail} onChange={(e) => this.handleChange(e, 'reEmail')}></input>
                       {
                         this.state.isSubmitting
                           ?
